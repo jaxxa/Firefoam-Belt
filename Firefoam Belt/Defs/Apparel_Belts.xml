@@ -1,33 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <ThingDef Name="ThingWithComps" ParentName="ApparelBase" Abstract="True">
-    <thingClass>ThingWithComps</thingClass>
-    <comps>
-      <li Class="CompProperties_Explosive">
-        <explosiveRadius>9.9</explosiveRadius>
-        <explosiveDamageType>Extinguish</explosiveDamageType>
-        <startWickHitPointsPercent>-1</startWickHitPointsPercent>
-        <startWickOnDamageTaken>Flame</startWickOnDamageTaken>
-        <postExplosionSpawnThingDef>FilthFireFoam</postExplosionSpawnThingDef>
-        <postExplosionSpawnChance>1</postExplosionSpawnChance>
-        <postExplosionSpawnThingCount>3</postExplosionSpawnThingCount>
-        <applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-        <explosionEffect>ExtinguisherExplosion</explosionEffect>
-      </li>
-      <li Class="CompProperties_Usable">
-        <useJob>TriggerFirefoamPopper</useJob>
-        <useLabel>Trigger firefoam popper</useLabel>
-      </li>
-      <li Class="CompProperties_UseEffect">
-        <compClass>CompUseEffect_StartWick</compClass>
-      </li>
-    </comps>
+  <ThingDef Name="FirefoamBeltBase" ParentName="ApparelBase" Abstract="True">
+    <thingClass>FirefoamBelt.FirefoamBelt</thingClass>
   </ThingDef>
 
-  <ThingDef ParentName="ThingWithComps">
+  <ThingDef ParentName="FirefoamBeltBase">
     <defName>Apparel_FirefoampBelt</defName>
-    <thingClass>Apparel</thingClass>
     <label>firefoam belt</label>
     <description>An automatic firefoam belt. It will release a thick cloud of foam if the wearer is on fire Single-use.</description>
     <techLevel>Industrial</techLevel>
