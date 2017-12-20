@@ -19,34 +19,31 @@ namespace FirefoamBelt
             }
         }
 
+        public override void CompTick()
+        {
+            Log.Message("Tick - Spawned:" + this.parent.Spawned.ToString() + 
+                        " Parent Pos: " + this.parent.Position.ToString() + 
+                        " Parent Pos Held: " + this.parent.PositionHeld);
+            
+            base.CompTick();
+        }
+
         public override void PostPreApplyDamage(DamageInfo dinfo, out bool absorbed)
         {
+            
+            absorbed = true;
+            
+            Log.Message("PreKill - Spawned: " + this.parent.Spawned.ToString() +
+                        " Parent Pos: " + this.parent.Position.ToString() +
+                        " Parent Pos Held: " + this.parent.PositionHeld);
 
-            absorbed = false;
+            Log.Error("Killing Parent of Comp");
 
-            if (dinfo.Def == DamageDefOf.Burn || dinfo.Def == DamageDefOf.Flame)
-            {
-                
-                //Log.Message("Fire! Fire!");
+            this.parent.Kill(new DamageInfo?(), (Hediff)null);
 
-                //GenExplosion.DoExplosion(this.Wearer.Position, this.Wearer.Map, 5, DamageDefOf.Extinguish, this);
-                //this.Destroy(DestroyMode.Vanish);
-                //return true;
-                var _Apparal = (Apparel)this.parent;
-
-                if (_Apparal != null)
-                {
-                    GenExplosion.DoExplosion(_Apparal.Wearer.Position, _Apparal.Wearer.Map, 5, DamageDefOf.Extinguish, _Apparal);
-                    absorbed = true;
-                }
-                else
-                {
-                    Log.Error("CompFirefoamBelt.PostPreApplyDamage failed to get Parent Apparal.");
-                }
-
-            }
-            //GenExplosion.DoExplosion(this.Wearer.Position, this.Wearer.Map, StatExtension.GetStatValue((Thing)this, StatDefOf.SmokepopBeltRadius, true), DamageDefOf.Smoke, (Thing)null, -1, (SoundDef)null, (ThingDef)null, (ThingDef)null, ThingDefOf.Gas_Smoke, 1f, 1, false, (ThingDef)null, 0.0f, 1, 0.0f, false);
-            //return false;
+            Log.Message("PostKill - Spawned: " + this.parent.Spawned.ToString() +
+                        " Parent Pos: " + this.parent.Position.ToString() +
+                        " Parent Pos Held: " + this.parent.PositionHeld);
         }
     }
 
