@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\Jaxxa-Rimworld\lib\Harmony\1.0.9.1\Release\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Jaxxa-Rimworld\lib\B18\1722\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
