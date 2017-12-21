@@ -74,7 +74,13 @@ namespace FirefoamBelt
             Log.Message("Executing Detonate_Prefix");
             Log.Message("Map: " + (map != null).ToString());
             if (!__instance.parent.SpawnedOrAnyParentSpawned)
+            {
                 return false; //Dont run origional
+            }
+
+            //Cache Position before Killing parent.
+            IntVec3 _Position = __instance.parent.PositionHeld;
+
             CompProperties_Explosive props = __instance.Props;
             float radius = __instance.ExplosiveRadius();
             if ((double)props.explosiveExpandPerFuel > 0.0 && __instance.parent.GetComp<CompRefuelable>() != null)
@@ -102,12 +108,15 @@ namespace FirefoamBelt
                 if (props.explosionEffect != null)
                 {
                     Effecter effecter = props.explosionEffect.Spawn();
-                    effecter.Trigger(new TargetInfo(__instance.parent.PositionHeld, map, false), new TargetInfo(__instance.parent.PositionHeld, map, false));
+                    //effecter.Trigger(new TargetInfo(__instance.parent.PositionHeld, map, false), new TargetInfo(__instance.parent.PositionHeld, map, false));
+                    //Use the Cached Position
+                    effecter.Trigger(new TargetInfo(_Position, map, false), new TargetInfo(_Position, map, false));
                     effecter.Cleanup();
                 }
                 //GenExplosion.DoExplosion(this.parent.PositionHeld, map, radius, props.explosiveDamageType, this.instigator ?? (Thing)this.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
 
-                GenExplosion.DoExplosion(__instance.parent.PositionHeld, map, radius, props.explosiveDamageType, (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
+               // GenExplosion.DoExplosion(__instance.parent.PositionHeld, map, radius, props.explosiveDamageType, (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
+                GenExplosion.DoExplosion(_Position, map, radius, props.explosiveDamageType, (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
             }
 
             return false;
