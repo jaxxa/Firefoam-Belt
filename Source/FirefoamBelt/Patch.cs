@@ -27,9 +27,9 @@ namespace FirefoamBelt
             //Patch.LogNULL(_RimWorld_Plant_Resting, "RimWorld_Plant_Resting", true);
 
             //Get the Resting Property Getter Method
-            MethodInfo _RimWorld_CompExplosive_Detonate = typeof(RimWorld.CompExplosive).GetMethod("Detonate",BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo _RimWorld_CompExplosive_Detonate = typeof(RimWorld.CompExplosive).GetMethod("Detonate", BindingFlags.NonPublic | BindingFlags.Instance);
             Patch.LogNULL(_RimWorld_CompExplosive_Detonate, "_RimWorld_CompExplosive_Detonate", true);
-           
+
             //Get the Prefix Patch
             MethodInfo _CompExplosiveFix_DetonateFixed = typeof(CompExplosive_Fix).GetMethod("Detonate_Prefix", BindingFlags.NonPublic | BindingFlags.Static);
             Patch.LogNULL(_CompExplosiveFix_DetonateFixed, "Detonate_Prefix", true);
@@ -72,14 +72,18 @@ namespace FirefoamBelt
         protected static Boolean Detonate_Prefix(ref CompExplosive __instance, Map map)
         {
             Log.Message("Executing Detonate_Prefix");
-            Log.Message("Map: " + (map != null).ToString());
+            //Log.Message("Map: " + (map != null).ToString());
             if (!__instance.parent.SpawnedOrAnyParentSpawned)
             {
+                Log.Message("Bailing out as Not SpawnedOrAnyParentSpawned");
                 return false; //Dont run origional
             }
 
             //Cache Position before Killing parent.
             IntVec3 _Position = __instance.parent.PositionHeld;
+            Log.Message("PositionHeld Cached");
+            Log.Message(" Parent Pos: " + __instance.parent.Position.ToString() +
+                        " Parent Pos Held: " + __instance.parent.PositionHeld);
 
             CompProperties_Explosive props = __instance.Props;
             float radius = __instance.ExplosiveRadius();
@@ -93,7 +97,7 @@ namespace FirefoamBelt
 
             //this.EndWickSustainer();
 
-            //EndWickSustainer is Provate so use Reflection to invoke the method.
+            //EndWickSustainer is Private so use Reflection to invoke the method.
             MethodInfo _EndWickSustainer = typeof(CompExplosive).GetMethod("EndWickSustainer", BindingFlags.NonPublic | BindingFlags.Instance);
             //Patch.LogNULL(_EndWickSustainer, "_EndWickSustainer", true);
             if (_EndWickSustainer != null)
@@ -108,8 +112,13 @@ namespace FirefoamBelt
             }
             else
             {
+                Log.Message("About to Do Exposion, PositionHeld now returns Parent Position, not the same Pos Held Value as before the parent was killed, so use the cached value.");
+                Log.Message(" Parent Pos: " + __instance.parent.Position.ToString() +
+                            " Parent Pos Held: " + __instance.parent.PositionHeld);
+
                 if (props.explosionEffect != null)
                 {
+
                     Effecter effecter = props.explosionEffect.Spawn();
                     //effecter.Trigger(new TargetInfo(__instance.parent.PositionHeld, map, false), new TargetInfo(__instance.parent.PositionHeld, map, false));
                     //Use the Cached Position
