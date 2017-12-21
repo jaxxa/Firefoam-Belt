@@ -95,7 +95,7 @@ namespace FirefoamBelt
 
             //EndWickSustainer is Provate so use Reflection to invoke the method.
             MethodInfo _EndWickSustainer = typeof(CompExplosive).GetMethod("EndWickSustainer", BindingFlags.NonPublic | BindingFlags.Instance);
-            Patch.LogNULL(_EndWickSustainer, "_EndWickSustainer", true);
+            //Patch.LogNULL(_EndWickSustainer, "_EndWickSustainer", true);
             if (_EndWickSustainer != null)
             {
                 _EndWickSustainer.Invoke(__instance, null);
@@ -116,9 +116,14 @@ namespace FirefoamBelt
                     effecter.Trigger(new TargetInfo(_Position, map, false), new TargetInfo(_Position, map, false));
                     effecter.Cleanup();
                 }
+
+                //Get the instigator unsing Reflection because it is private
+                FieldInfo _Instigator = typeof(CompExplosive).GetField("instigator", BindingFlags.NonPublic | BindingFlags.Instance);
+                //Patch.LogNULL(_Instigator, "_Instigator", true);
+                Thing _InstigatorValue = (Thing)_Instigator.GetValue(__instance);
+
                 //GenExplosion.DoExplosion(this.parent.PositionHeld, map, radius, props.explosiveDamageType, this.instigator ?? (Thing)this.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
-               // GenExplosion.DoExplosion(__instance.parent.PositionHeld, map, radius, props.explosiveDamageType, (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
-                GenExplosion.DoExplosion(_Position, map, radius, props.explosiveDamageType, (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
+                GenExplosion.DoExplosion(_Position, map, radius, props.explosiveDamageType, _InstigatorValue ?? (Thing)__instance.parent, props.damageAmountBase, props.explosionSound, (ThingDef)null, (ThingDef)null, props.postExplosionSpawnThingDef, props.postExplosionSpawnChance, props.postExplosionSpawnThingCount, props.applyDamageToExplosionCellsNeighbors, props.preExplosionSpawnThingDef, props.preExplosionSpawnChance, props.preExplosionSpawnThingCount, props.chanceToStartFire, props.dealMoreDamageAtCenter);
             }
 
             return false;
