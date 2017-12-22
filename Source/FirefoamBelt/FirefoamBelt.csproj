@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=1.0.9.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jaxxa-Rimworld\lib\Harmony\1.0.9.1\Release\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Jaxxa-Rimworld\lib\B18\1722\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -48,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FirefoamBelt.cs" />
+    <Compile Include="Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
