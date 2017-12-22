@@ -18,15 +18,9 @@ namespace FirefoamBelt
         {
 
             Log.Message("Patching FirefoamBelt");
-            //HarmonyInstance.Create("EnhancedDevelopment.WarningOptions")PatchAll(Assembly.GetExecutingAssembly());
-            HarmonyInstance _Harmony = HarmonyInstance.Create("EnhancedDevelopment.WarningOptions");
-
-
-            ////Get the Origional Resting Property
-            //PropertyInfo _RimWorld_Plant_Resting = typeof(RimWorld.Plant).GetProperty("Resting", BindingFlags.NonPublic | BindingFlags.Instance);
-            //Patch.LogNULL(_RimWorld_Plant_Resting, "RimWorld_Plant_Resting", true);
-
-            //Get the Resting Property Getter Method
+            HarmonyInstance _Harmony = HarmonyInstance.Create("FirefoamBelt");
+            
+            //Get the Method
             MethodInfo _RimWorld_CompExplosive_Detonate = typeof(RimWorld.CompExplosive).GetMethod("Detonate", BindingFlags.NonPublic | BindingFlags.Instance);
             Patch.LogNULL(_RimWorld_CompExplosive_Detonate, "_RimWorld_CompExplosive_Detonate", true);
 
@@ -36,9 +30,7 @@ namespace FirefoamBelt
 
             //Apply the Prefix Patch
             _Harmony.Patch(_RimWorld_CompExplosive_Detonate, new HarmonyMethod(_CompExplosiveFix_DetonateFixed), null);
-
-
-
+            
             Log.Message("Patching FirefoamBelt Complete");
         }
 
@@ -66,7 +58,7 @@ namespace FirefoamBelt
     }
 
 
-    public class CompExplosive_Fix : CompExplosive
+    public class CompExplosive_Fix
     {
 
         protected static Boolean Detonate_Prefix(ref CompExplosive __instance, Map map)
