@@ -65,6 +65,8 @@ namespace FirefoamBelt
         {
 
             Log.Message("Detonate");
+            Patch.LogNULL(map, "map");
+
             if (__instance.parent.SpawnedOrAnyParentSpawned)
             {
 
